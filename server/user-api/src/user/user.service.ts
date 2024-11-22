@@ -52,13 +52,11 @@ export class UserService {
         return this.repository.save(user);
     }
 
-
     async changePassword(id: number, newPassword: string): Promise<User> {
         const user = await this.findById(id);
         user.password = await bcrypt.hash(newPassword, Auth.PASSWORD_SALT);
         return this.repository.save(user);
     }
-
 
     async delete(id: number): Promise<void> {
         const user = await this.findById(id);
