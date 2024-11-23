@@ -63,6 +63,7 @@
 </head>
 <body>
 <div class="container">
+    <h2>Only for debug purposes</h2>
     <div class="response"></div>
     <div class="form">
         <form action="/caht" id="chatform">
@@ -87,7 +88,7 @@
         const question = document.querySelector('#question').value;
         const resultEl = document.querySelector('div.response');
 
-        const response = await fetch('/ask_bot', {
+        const response = await fetch('/chat', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/html',

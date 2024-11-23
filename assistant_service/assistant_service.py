@@ -32,7 +32,7 @@ def query_llm(
 
 app = Flask(__name__)
 CORS(app)
-model = os.getenv('LLM_MODEL_PATH')
+model = '/opt/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf'
 try:
     llm = load_llm(model_path=model)
 except Exception as e:
