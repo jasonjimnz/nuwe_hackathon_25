@@ -16,4 +16,7 @@ EXPOSE 5001
 
 ENV LLM_MODEL_PATH=/opt/models/${LLM_MODEL_FILE}
 
-CMD ["/opt/app/run_assistant_service.sh"]
+RUN echo ${LLM_MODEL_PATH}
+
+# CMD ["/opt/app/run_assistant_service.sh"]
+CMD gunicorn -w 4 -b ${ASSISTANT_SERVCICE_HOST}:5001 assistant_service:app

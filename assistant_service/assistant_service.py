@@ -33,7 +33,11 @@ def query_llm(
 app = Flask(__name__)
 CORS(app)
 model = os.getenv('LLM_MODEL_PATH')
-llm = load_llm(model_path=model)
+try:
+    llm = load_llm(model_path=model)
+except Exception as e:
+    print(f"{model} used for loading model does not provide a model")
+    raise e
 
 
 @app.route("/")
