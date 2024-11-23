@@ -1,0 +1,7 @@
+flask
+flask-cors
+gunicorn
+llama-cpp-python
+neo4j-driver
+requests
+attrs
