@@ -1,0 +1,54 @@
+{
+  "patients": [
+    {
+      "id": 1,
+      "name": "Juan Pérez",
+      "age": 30,
+      "conditions": ["Depresión"],
+      "gender": "Hombre"
+    },
+    {
+      "id": 2,
+      "name": "María Gómez",
+      "age": 25,
+      "conditions": ["Estrés", "Ansiedad"],
+      "gender": "Mujer"
+    },
+    {
+      "id": 3,
+      "name": "Carlos Mendoza",
+      "age": 40,
+      "conditions": ["Depresión", "Estrés"],
+      "gender": "Hombre"
+    },
+    {
+      "id": 4,
+      "name": "Lucía Rodríguez",
+      "age": 35,
+      "conditions": ["Ansiedad", "Estrés", "Trastorno de la conducta alimentaria"],
+      "gender": "Mujer"
+    }
+  ],
+  "specialists": [
+    {
+      "id": 1,
+      "name": "Carlos López",
+      "specialty": "Psiquiatra"
+    },
+    {
+      "id": 2,
+      "name": "Ana Martínez",
+      "specialty": "Psicólogo"
+    },
+    {
+      "id": 3,
+      "name": "Luis Pérez",
+      "specialty": "Psiquiatra"
+    },
+    {
+      "id": 4,
+      "name": "Sofía García",
+      "specialty": "Psicóloga"
+    }
+  ]
+}

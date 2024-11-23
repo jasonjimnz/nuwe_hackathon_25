@@ -1,0 +1,26 @@
+.footer-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--primary-color);
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  color: var(--text-color);
+  z-index: 10;
+}
+
+.footer-button {
+  background-color: var(--secondary-color);
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: var(--primary-color);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.footer-button:hover {
+  background-color: var(--secondary-color-hover);
+}
