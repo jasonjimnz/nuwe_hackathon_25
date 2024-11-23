@@ -69,7 +69,7 @@ def chat():
         token = headers.get('Authorization').replace('Bearer ', '')
     if NLP_SERVICE_TOKEN:
         requests.post(
-            url="{}/parse".format(os.getenv('NLP_SERVICE_URL')),
+            url="{}/api_parse".format(os.getenv('NLP_SERVICE_URL')),
             data={"question": question},
             headers={
                 "Authorization": f"Bearer {NLP_SERVICE_TOKEN}",
