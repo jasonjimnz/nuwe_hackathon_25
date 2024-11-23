@@ -3,7 +3,7 @@ FROM python:3.12-slim
 WORKDIR /opt/app
 
 COPY nlp_service/requirements.txt requirements.txt
-COPY nlp_service/ .
+COPY nlp_service/* .
 
 RUN apt update && apt upgrade
 RUN pip install -r requirements.txt
