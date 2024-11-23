@@ -6,7 +6,7 @@ from django.views import View
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
-from nlp_service.core.graph import add_user_word_token
+from .graph import add_user_word_token
 
 
 # Create your views here.
