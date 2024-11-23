@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 import spacy
@@ -133,4 +133,14 @@ SUPPORTED_LANGUAGES = ['es']
 # TODO: consider English for future versions
 LANGUAGE_MODELS = {
     'es': spacy.load('es_core_news_sm')
+}
+
+
+# Neo4J Settings
+
+NEO4J_CONFIG = {
+    "host": os.getenv("NEO4J_HOST"),
+    "port": os.getenv("NEO4J_PORT"),
+    "user": os.getenv("NEO4J_USER"),
+    "password": os.getenv("NEO4J_PASSWORD")
 }

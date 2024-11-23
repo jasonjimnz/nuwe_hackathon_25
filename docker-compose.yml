@@ -26,6 +26,11 @@ services:
       dockerfile: nlp_service/Dockerfile
     ports:
       - "8000:8000"
+    environment:
+      NEO4J_HOST: ${NEO4J_HOST}
+      NEO4J_PORT: ${NEO4J_PORT}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
     volumes:
       - ./nlp_service:/opt/app
   assistant_service:

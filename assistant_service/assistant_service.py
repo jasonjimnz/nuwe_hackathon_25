@@ -61,7 +61,7 @@ def chat():
 
     if not question:
         return jsonify({'error': 'Question param is required'}), 400
-
+    # TODO: Before adding a question, check NLP service for retrieving context
     resp = query_llm(
         llm=llm,
         question=question,
