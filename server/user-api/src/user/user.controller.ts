@@ -1,10 +1,10 @@
 import { Controller, Get, Put, Delete, Body, Param, NotFoundException, Req, BadRequestException, UnauthorizedException, ForbiddenException } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
 import { ApiTags, ApiOperation, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import { UserService } from 'src/user/user.service';
 import { UpdateUserDto } from 'src/user/dto/update_user.dto';
 import { Role } from 'src/enums/role';
 
-@ApiTags("user")
+@ApiTags("User")
 @Controller("api/user")
 export class UserController {
   constructor(private readonly userService: UserService) { }

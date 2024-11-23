@@ -1,6 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { Gender } from 'src/enums/gender';
 import { Role } from 'src/enums/role';
+import { Consultation } from 'src/consultation/entities/consultation.entity';
+import { Message } from 'src/message/entities/message.entity';
 
 @Entity({ name: 'User' })
 export class User {
@@ -38,4 +40,16 @@ export class User {
 
     @CreateDateColumn()
     createdAt: Date;
+
+    @OneToMany(() => Consultation, (consulta) => consulta.patient, { nullable: true })
+    consultasAsPatient: Consultation[];
+
+    @OneToMany(() => Consultation, (consulta) => consulta.doctor, { nullable: true })
+    consultasAsDoctor: Consultation[];
+
+    @OneToMany(() => Message, (message) => message.sender, { nullable: true })
+    sentMessages: Message[];
+
+    @OneToMany(() => Message, (message) => message.receiver, { nullable: true })
+    receivedMessages: Message[];
 }
