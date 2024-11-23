@@ -2,7 +2,10 @@ from neo4j import GraphDatabase
 import pandas as pd
 
 # Conexión a Neo4j
-
+uri = "bolt://164.132.56.231:7687"
+username = "neo4j"
+password = "p3o7oSMXmJNJLt9XqCurAviX"
+driver = GraphDatabase.driver(uri, auth=(username, password))
 def fetch_patients():
     query = """
     MATCH (p:Patient)
@@ -13,7 +16,8 @@ def fetch_patients():
            p.pathologies AS Pathologies, 
            p.notes AS Notes, 
            p.startDate AS StartDate, 
-           p.tiempo AS DaysSinceStart
+           p.tiempo AS DaysSinceStart,
+           p.recovered
     """
     with driver.session() as session:
         result = session.run(query)
