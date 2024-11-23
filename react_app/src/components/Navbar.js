@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import {
   AppBar,
@@ -9,28 +9,30 @@ import {
   Box,
   Button,
   Typography,
+  Tooltip,
   Avatar,
-} from "@mui/material";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import { authStore } from "../store/authStore";
-import { loginStore } from "../store/authStore";
-import { useStore } from "@nanostores/react";
-import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from "@mui/icons-material/Logout";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+} from '@mui/material';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import { authStore } from '../store/authStore';
+import { logoutStore } from '../store/authStore';
+import { useStore } from '@nanostores/react';
+import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const Navbar = ({ toggleTheme, isDarkMode }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { isAuthenticated, user } = useStore(authStore);
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
+  const navigate = useNavigate();
 
   const toggleDrawer = (open) => (event) => {
     if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
     ) {
       return;
     }
@@ -58,16 +60,16 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
             component="div"
             sx={{
               flexGrow: 1,
-              display: { xs: "flex", sm: "flex" },
-              alignItems: "center",
+              display: { xs: 'flex', sm: 'flex' },
+              alignItems: 'center',
             }}
           >
             <Avatar
               alt="Nuwe"
               src={
                 isDarkMode
-                  ? "/assets/caixabank-icon-blue.png"
-                  : "/assets/caixabank-icon.png"
+                  ? '/assets/caixabank-icon-blue.png'
+                  : '/assets/caixabank-icon.png'
               }
               sx={{ mr: 1 }}
             />
@@ -75,17 +77,17 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {/* //TODO */}
-            {/* {
-                        isAuthenticated &&
-                        (<>
-                            <Tooltip title={user.email}>
-                                <Avatar sx={{ ml: 2 }}>
-                                {user.email.charAt(0).toUpperCase()}
-                                </Avatar>
-                            </Tooltip>
-                        </>)} */}
+            {/* {isAuthenticated && loggedUser && (
+              <>
+                <Tooltip title={loggedUser.email}>
+                  <Avatar sx={{ ml: 2 }}>
+                    {loggedUser.email.charAt(0).toUpperCase()}
+                  </Avatar>
+                </Tooltip>
+              </>
+            )} */}
           </Box>
         </Toolbar>
       </AppBar>
@@ -98,27 +100,27 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
             onKeyDown={toggleDrawer(false)}
             fullWidth
             sx={{
-              width: { xs: "100%", md: 250 },
-              position: "relative",
-              height: "100vh",
+              width: { xs: '100%', md: 250 },
+              position: 'relative',
+              height: '100vh',
             }}
           >
             <Typography
-              sx={{ p: 2, background: "#007eae", color: "white" }}
+              sx={{ p: 2, background: '#007eae', color: 'white' }}
               variant="h6"
               gutterBottom
             >
               Menu
             </Typography>
             <Button
-              variant={isActive("/") ? "contained" : "text"}
+              variant={isActive('/') ? 'contained' : 'text'}
               color="primary"
               component={Link}
               to="/"
               startIcon={<DashboardIcon />}
               fullWidth
               sx={{
-                justifyContent: "flex-start",
+                justifyContent: 'flex-start',
                 pl: 2,
                 borderRadius: 0,
               }}
@@ -130,7 +132,7 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
               fullWidth
               orientation="vertical"
               sx={{
-                position: "absolute",
+                position: 'absolute',
                 left: 0,
                 bottom: 0,
                 borderRadius: 0,
@@ -149,13 +151,13 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
                   borderRadius: 0,
                 }}
               >
-                {isDarkMode ? "Light" : "Dark"}
+                {isDarkMode ? 'Light' : 'Dark'}
               </Button>
               <Button
                 fullWidth
                 variant="contained"
                 color="error"
-                onClick={loginStore}
+                onClick={logoutStore}
                 startIcon={<LogoutIcon />}
                 sx={{
                   borderRadius: 0,

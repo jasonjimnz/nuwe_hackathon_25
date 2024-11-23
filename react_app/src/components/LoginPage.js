@@ -1,38 +1,38 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginStore } from "../store/authStore";
-import { Box, Button, TextField, Typography, Alert } from "@mui/material";
-import { login } from "../services/auth_service";
-import { getUserDetail } from "../services/user_service";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginStore } from '../store/authStore';
+import { Box, Button, TextField, Typography, Alert } from '@mui/material';
+import { login } from '../services/auth_service';
+import { getUserDetail } from '../services/user_service';
 function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
-      setError("Both email and password are required.");
+      setError('Both email and password are required.');
       return;
     }
 
     try {
       const response = await login(email, password);
-      localStorage.setItem("accessToken", response.access_token);
+      localStorage.setItem('accessToken', response.access_token);
       const userDetail = await getUserDetail();
       loginStore(response.access_token, userDetail);
-      navigate("/");
+      navigate('/');
     } catch (error) {
-      setError("Invalid email or password. Please try again.");
+      setError('Invalid email or password. Please try again.');
     }
   };
   return (
     <Box
       sx={{
         maxWidth: 400,
-        mx: "auto",
+        mx: 'auto',
         mt: 8,
         mb: 8,
         p: 2,
@@ -81,7 +81,7 @@ function LoginPage() {
         <Button
           variant="outlined"
           color="primary"
-          onClick={() => navigate("/register")}
+          onClick={() => navigate('/register')}
         >
           Register
         </Button>
