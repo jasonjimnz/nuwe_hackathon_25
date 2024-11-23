@@ -5,7 +5,7 @@ WORKDIR /opt/app
 COPY assistant_service/requirements.txt requirements.txt
 COPY assistant_service/* .
 COPY assistant_service/templates /opt/app/templates
-COPY ${LLM_MODEL_PATH} /opt/models/${LLM_MODEL_FILE}
+COPY Llama-3.2-1B-Instruct-Q4_K_M.gguf /opt/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf
 
 RUN apt update && apt upgrade
 RUN apt install -y python3-dev gcc g++ make jq
@@ -14,6 +14,6 @@ RUN chmod +x /opt/app/*.sh
 
 EXPOSE 5001
 
-ENV LLM_MODEL_PATH=/opt/models/${LLM_MODEL_FILE}
+ENV LLM_MODEL_PATH=/opt/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf
 
 CMD ["/opt/app/run_assistant_service.sh"]

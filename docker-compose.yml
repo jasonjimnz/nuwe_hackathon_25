@@ -38,3 +38,22 @@ services:
       ASSISTANT_SERVICE_PORT: ${ASSISTANT_SERVICE_PORT}
       LLM_MODEL_PATH: ${LLM_MODEL_PATH}
       LLM_MODEL_FILE: ${LLM_MODEL_FILE}
+  user_backend:
+    build:
+      dockerfile:  user_api.Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_SYNCHRONIZE: ${DB_SYNCHRONIZE}
+      DB_TYPE: ${DB_TYPE}
+      API_HOST: ${API_HOST}
+      API_PORT: ${API_PORT}
+      ALLOWED_ORIGIN: ${ALLOWED_ORIGIN}
+
+    depends_on:
+      - mysql
