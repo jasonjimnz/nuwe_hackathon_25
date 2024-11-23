@@ -31,6 +31,7 @@ services:
       NEO4J_PORT: ${NEO4J_PORT}
       NEO4J_USER: ${NEO4J_USER}
       NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      ASSISTANT_API_TOKEN: ${ASSISTANT_API_TOKEN}
     volumes:
       - ./nlp_service:/opt/app
   assistant_service:
@@ -43,6 +44,8 @@ services:
       ASSISTANT_SERVICE_PORT: ${ASSISTANT_SERVICE_PORT}
       LLM_MODEL_PATH: ${LLM_MODEL_PATH}
       LLM_MODEL_FILE: ${LLM_MODEL_FILE}
+      ASSISTANT_API_TOKEN: ${ASSISTANT_API_TOKEN}
+      NLP_SERVICE_URL: ${NLP_SERVICE_URL}
   user_backend:
     build:
       dockerfile:  user_api.Dockerfile

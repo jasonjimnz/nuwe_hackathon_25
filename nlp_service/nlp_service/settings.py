@@ -144,3 +144,8 @@ NEO4J_CONFIG = {
     "user": os.getenv("NEO4J_USER"),
     "password": os.getenv("NEO4J_PASSWORD")
 }
+
+VALID_API_TOKENS = []
+
+if os.getenv('ASSISTANT_API_TOKEN'):
+    VALID_API_TOKENS.append(os.getenv('ASSISTANT_API_TOKEN'))

@@ -1,4 +1,6 @@
 import os
+
+import requests
 from flask import Flask, request, stream_with_context, jsonify, render_template
 from flask_cors import CORS
 from llama_cpp import Llama
@@ -33,6 +35,7 @@ def query_llm(
 app = Flask(__name__)
 CORS(app)
 model = '/opt/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf'
+NLP_SERVICE_TOKEN = os.getenv('ASSISTANT_API_TOKEN', '')
 try:
     llm = load_llm(model_path=model)
 except Exception as e:
@@ -64,6 +67,15 @@ def chat():
     # TODO: Before adding a question, check NLP service for retrieving context
     if headers.get('Authorization'):
         token = headers.get('Authorization').replace('Bearer ', '')
+    if NLP_SERVICE_TOKEN:
+        requests.post(
+            url="{}/parse".format(os.getenv('NLP_SERVICE_URL')),
+            data={"question": question},
+            headers={
+                "Authorization": f"Bearer {NLP_SERVICE_TOKEN}",
+                "Content-type": "application/json"
+            }
+        )
     resp = query_llm(
         llm=llm,
         question=question,
