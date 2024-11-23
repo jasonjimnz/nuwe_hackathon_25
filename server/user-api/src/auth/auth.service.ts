@@ -12,9 +12,9 @@ export class AuthService {
     ) { }
 
     async verifyUser(authDto: AuthDto) {
-        const user = await this.userService.selectWithPassword(authDto.UserName);
+        const user = await this.userService.selectWithPassword(authDto.Email);
         if (!user) {
-            throw new NotFoundException(`No se encontró el usuario con el userName: ${authDto.UserName}`);
+            throw new NotFoundException(`No se encontró el usuario con el userName: ${authDto.Email}`);
         }
 
         const isMatch = await bcrypt.compare(authDto.Password, user.password);
@@ -24,10 +24,7 @@ export class AuthService {
 
         const payload = {
             sub: user.id,
-            userName: user.userName,
-            name: user.name,
-            lastName: user.lastName,
-            email: user.email,
+            email: user.email
         };
 
         return {

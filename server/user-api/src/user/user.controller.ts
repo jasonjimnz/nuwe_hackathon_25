@@ -1,35 +1,13 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException, BadRequestException, Req } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Body, Param, NotFoundException, Req, BadRequestException, UnauthorizedException, ForbiddenException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { ApiTags, ApiOperation, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
-import { Public } from 'src/constants/constants';
-import { CreateUserDto } from 'src/user/dto/create_user.dto';
 import { UpdateUserDto } from 'src/user/dto/update_user.dto';
+import { Role } from 'src/enums/role';
 
 @ApiTags("user")
 @Controller("api/user")
 export class UserController {
   constructor(private readonly userService: UserService) { }
-
-  @ApiOperation({ summary: 'Registrar un nuevo usuario' })
-  @ApiBody({ type: CreateUserDto })
-  @Post('sign-up')
-  @Public()
-  async create(@Body() userDto: CreateUserDto) {
-    const alreadyExistEmail = await this.userService.findByEmail(userDto.Email);
-    const alreadyExistUserName = await this.userService.findByUserName(userDto.UserName);
-
-    if (alreadyExistEmail) {
-      throw new BadRequestException('El correo electrónico ya está en uso.');
-    }
-
-    if (alreadyExistUserName) {
-      throw new BadRequestException('El nombre de usuario ya está en uso.');
-    }
-
-    const user = await this.userService.create(userDto);
-    user.password = "";
-    return user;
-  }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener un usuario por correo electrónico' })
@@ -39,18 +17,6 @@ export class UserController {
     const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new NotFoundException('Usuario no encontrado con ese correo electrónico.');
-    }
-    return user;
-  }
-
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obtener un usuario por nombre de usuario' })
-  @ApiParam({ name: 'username', description: 'Nombre de usuario', example: 'usuario123' })
-  @Get('username/:username')
-  async getUserByUsername(@Param('username') username: string) {
-    const user = await this.userService.findByUserName(username);
-    if (!user) {
-      throw new NotFoundException('Usuario no encontrado con ese nombre de usuario.');
     }
     return user;
   }
@@ -83,23 +49,72 @@ export class UserController {
   @ApiParam({ name: 'id', description: 'ID del usuario', example: '1' })
   @ApiBody({ type: UpdateUserDto })
   @Put('update/:id')
-  async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    const user = await this.userService.findById(id);
-    if (!user) {
-      throw new NotFoundException('Usuario no encontrado con ese ID.');
+  async update(
+    @Param('id') id: number,
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() req
+  ) {
+    const userId = req.user.id;
+
+    if (isNaN(id) || id <= 0) {
+      throw new BadRequestException('El ID proporcionado no es válido.');
     }
-    return this.userService.update(id, updateUserDto);
+
+    if (id !== userId) {
+      const userRequesting = await this.userService.findById(userId);
+
+      if (!userRequesting) {
+        throw new UnauthorizedException(
+          'El usuario autenticado no se encuentra en el sistema.'
+        );
+      }
+
+      if (userRequesting.role !== Role.Admin) {
+        throw new BadRequestException(
+          'Solo el propio usuario o un administrador pueden modificar estos datos.'
+        );
+      }
+    }
+
+    const userToUpdate = await this.userService.findById(id);
+    if (!userToUpdate) {
+      throw new NotFoundException(`Usuario no encontrado con el ID ${id}.`);
+    }
+    const user = await this.userService.update(id, updateUserDto);
+    user.password = "";
+    return user;
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar usuario' })
   @ApiParam({ name: 'id', description: 'ID del usuario', example: '1' })
   @Delete('delete/:id')
-  async delete(@Param('id') id: number) {
-    const user = await this.userService.findById(id);
-    if (!user) {
-      throw new NotFoundException('Usuario no encontrado con ese ID.');
+  async delete(@Param('id') id: number, @Req() req) {
+    const userId = req.user.id;
+
+    if (isNaN(id) || id <= 0) {
+      throw new BadRequestException('El ID proporcionado no es válido.');
     }
+
+    const userToDelete = await this.userService.findById(id);
+    if (!userToDelete) {
+      throw new NotFoundException(`Usuario no encontrado con el ID ${id}.`);
+    }
+
+    const userRequesting = await this.userService.findById(userId);
+
+    if (!userRequesting) {
+      throw new UnauthorizedException(
+        'El usuario autenticado no se encuentra en el sistema.'
+      );
+    }
+
+    if (id !== userId && userRequesting.role !== Role.Admin) {
+      throw new ForbiddenException(
+        'Solo el propio usuario o un administrador pueden eliminar este usuario.'
+      );
+    }
+
     await this.userService.delete(id);
     return { message: 'Usuario eliminado correctamente.' };
   }

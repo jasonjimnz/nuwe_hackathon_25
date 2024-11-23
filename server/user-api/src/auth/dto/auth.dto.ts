@@ -2,10 +2,9 @@ import { IsString, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthDto {
-    @ApiProperty({ example: 'john_doe', description: 'Nombre de usuario' })
-    @IsString({ message: 'El nombre de usuario debe ser una cadena de texto.' })
-    @Length(3, 50, { message: 'El nombre de usuario debe tener entre 3 y 50 caracteres.' })
-    UserName: string;
+    @ApiProperty({ example: 'correo@correo.es', description: 'Correo electrónico del usuario' })
+    @IsString({ message: 'El correo electrónico debe ser una cadena de texto.' })
+    Email: string;
 
     @ApiProperty({ example: 'password123', description: 'Contraseña' })
     @IsString({ message: 'La contraseña debe ser una cadena de texto.' })
