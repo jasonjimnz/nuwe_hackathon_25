@@ -1,9 +1,9 @@
-ID,Name,Gender,Age,Pathologies,Notes,StartDate,DaysSinceStart
-101,Carlos López,Male,24,['Anxiety'],Primera sesión.,2024-11-01,22
-102,María Ruiz,Female,28,"['Depression', 'Insomnia']",Tratamiento ajustado.,2024-01-10,313
-103,Luis Fernández,Male,22,['Bipolar Disorder'],Consulta inicial.,2024-11-01,22
-104,Sofía Martínez,Female,30,"['PTSD', 'Depression']","Progreso lento, necesita seguimiento.",2023-09-01,442
-105,Andrés Gómez,Male,36,"['Anxiety', 'Insomnia']",Sesión exitosa.,2023-06-01,532
-106,Laura Gómez,Female,30,['Anxiety'],Derivar a psiquiatra,2024-02-25,269
-107,Ricardo Gutiérrez,Male,30,['Depression'],Sesión exitosa.,2023-05-29,535
-108,Alejandra García,Female,26,['Insomnia'],"Progreso lento, necesita seguimiento",2023-11-23,360
+ID,Name,Gender,Age,Pathologies,Notes,StartDate,DaysSinceStart,p.recovered
+101,Carlos López,Male,24,['Anxiety'],Primera sesión.,2024-11-01,22,False
+102,María Ruiz,Female,28,"['Depression', 'Insomnia']",Tratamiento ajustado.,2024-01-10,313,False
+103,Luis Fernández,Male,22,['Bipolar Disorder'],Consulta inicial.,2024-11-01,22,False
+104,Sofía Martínez,Female,30,"['PTSD', 'Depression']","Progreso lento, necesita seguimiento.",2023-09-01,442,False
+105,Andrés Gómez,Male,36,"['Anxiety', 'Insomnia']",Sesión exitosa.,2023-06-01,532,True
+106,Laura Gómez,Female,30,['Anxiety'],Derivar a psiquiatra,2024-02-25,269,False
+107,Ricardo Gutiérrez,Male,30,['Depression'],Sesión exitosa.,2023-05-29,535,True
+108,Alejandra García,Female,26,['Insomnia'],"Progreso lento, necesita seguimiento",2023-11-23,360,False
