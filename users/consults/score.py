@@ -12,9 +12,9 @@ class Connection:
             return session.run(query, parameters)
 
 
-uri = "bolt://164.132.56.231:7687"
-username = "neo4j"
-password = "p3o7oSMXmJNJLt9XqCurAviX"
+uri = 
+username = 
+password = 
 dv = Connection(uri, username, password)
 
 #add_pathology(patient_id, pathology_name, recovered)
