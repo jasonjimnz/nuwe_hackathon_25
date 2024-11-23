@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, CssBaseline, Box, Container } from "@mui/material";
 import { lightTheme, darkTheme } from "./theme";
+import { authStore } from "./store/authStore";
+import { useStore } from "@nanostores/react";
+
 import Navbar from "./components/Navbar";
-// import Dashboard from './components/Dashboard';
+import Dashboard from "./components/Dashboard";
 // import Footer from './components/Footer';
-import Login from "./components/login/Login";
 import RegisterPage from "./components/RegisterPage";
 import HomePagePatient from "./components/home_page_patient/HomePagePatient";
 import HomePageSpecialist from "./components/home_page_specialist/HomePageSpecialist";
@@ -15,6 +17,7 @@ import ForgotPasswordPage from "./components/ForgotPasswordPage";
 import NotProtectedRoute from "./components/NotProtectedRoute";
 
 function App() {
+  const auth = useStore(authStore);
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
@@ -31,7 +34,6 @@ function App() {
       setIsDarkMode(true);
     }
   }, []);
-  const auth = Boolean(localStorage.getItem("accessToken") != null);
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
@@ -48,14 +50,22 @@ function App() {
           <Container sx={{ flex: 1, mt: 4 }}>
             <Routes>
               {/* Rutas protegidas */}
-              <Route element={<ProtectedRoute isAuthenticated={auth} />}>
-                {/* <Route path="/" element={<Dashboard />} /> */}
+              <Route
+                element={
+                  <ProtectedRoute isAuthenticated={auth.isAuthenticated} />
+                }
+              >
+                <Route path="/" element={<Dashboard />} />
                 <Route path="/patient" element={<HomePagePatient />} />
                 <Route path="/specialist" element={<HomePageSpecialist />} />
               </Route>
 
               {/* Rutas públicas */}
-              <Route element={<NotProtectedRoute isAuthenticated={auth} />}>
+              <Route
+                element={
+                  <NotProtectedRoute isAuthenticated={auth.isAuthenticated} />
+                }
+              >
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route

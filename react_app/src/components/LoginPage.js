@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { login } from "../stores/authStore";
+import { loginStore } from "../store/authStore";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 import { login } from "../services/auth_service";
 import { getUserDetail } from "../services/user_service";
@@ -22,8 +22,7 @@ function LoginPage() {
       const response = await login(email, password);
       localStorage.setItem("accessToken", response.access_token);
       const userDetail = await getUserDetail();
-      const user = { email, type: userDetail.role };
-      localStorage.setItem("loggedUser", JSON.stringify(user));
+      loginStore(response.access_token, userDetail);
       navigate("/");
     } catch (error) {
       setError("Invalid email or password. Please try again.");

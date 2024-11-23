@@ -12,7 +12,8 @@ import {
   Avatar,
 } from "@mui/material";
 import ButtonGroup from "@mui/material/ButtonGroup";
-
+import { authStore } from "../store/authStore";
+import { useStore } from "@nanostores/react";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -20,7 +21,7 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 const Navbar = ({ toggleTheme, isDarkMode }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const isAuthenticated = localStorage.getItem("accessToken") != null;
+  const { isAuthenticated, user } = useStore(authStore);
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
 
