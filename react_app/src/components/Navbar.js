@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import {
   AppBar,
@@ -12,7 +12,9 @@ import {
   Avatar,
 } from "@mui/material";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import { authStore } from "../store/authStore";
+import { loginStore } from "../store/authStore";
 import { useStore } from "@nanostores/react";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -25,7 +27,6 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
 
-  const logout = () => {};
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -109,21 +110,21 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
             >
               Menu
             </Typography>
-            {/* <Button
-                            variant={isActive("/") ? "contained" : "text"}
-                            color="primary"
-                            component={Link}
-                            to="/"
-                            startIcon={<DashboardIcon />}
-                            fullWidth
-                            sx={{ 
-                                justifyContent: "flex-start",
-                                pl: 2,
-                                borderRadius: 0
-                            }}
-                        >
-                            Dashboard
-                        </Button> */}
+            <Button
+              variant={isActive("/") ? "contained" : "text"}
+              color="primary"
+              component={Link}
+              to="/"
+              startIcon={<DashboardIcon />}
+              fullWidth
+              sx={{
+                justifyContent: "flex-start",
+                pl: 2,
+                borderRadius: 0,
+              }}
+            >
+              Dashboard
+            </Button>
 
             <ButtonGroup
               fullWidth
@@ -154,7 +155,7 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
                 fullWidth
                 variant="contained"
                 color="error"
-                onClick={logout}
+                onClick={loginStore}
                 startIcon={<LogoutIcon />}
                 sx={{
                   borderRadius: 0,

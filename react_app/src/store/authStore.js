@@ -7,7 +7,7 @@ export const authStore = atom({
 
 export const loginStore = (access_token, userData) => {
   authStore.set({
-    isAuthenticated: localStorage.getItem("accessToken") != null,
+    isAuthenticated: true,
     user: userData,
   });
   localStorage.setItem("accessToken", access_token);
@@ -15,9 +15,9 @@ export const loginStore = (access_token, userData) => {
 };
 
 export const logoutStore = () => {
-  authStore.set({ isAuthenticated: false, user: null });
   localStorage.removeItem("accessToken");
   localStorage.removeItem("userData");
+  authStore.set({ isAuthenticated: false, user: null });
 };
 
 window.addEventListener("storage", () => {
