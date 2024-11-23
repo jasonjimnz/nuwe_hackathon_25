@@ -1,0 +1,47 @@
+.home-page-specialist {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: var(--black);
+}
+
+.patients-list {
+  padding: 20px;
+  color: var(--black);
+}
+
+.patients-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.patients-list li {
+  padding: 10px;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  margin: 10px 0;
+  border-radius: 4px;
+  color: var(--text-color);
+}
+
+.patients-list li:hover {
+  background-color: var(--secondary-color);
+  color: var(--black);
+}
+
+.patient-chat {
+  flex: 1;
+  padding: 20px;
+  color: var(--black);
+}
+
+.patient-chat h3 {
+  font-size: 20px;
+  color: var(--black);
+}
+
+@media (max-width: 600px) {
+  .home-page-specialist {
+    padding: 10px;
+  }
+}
