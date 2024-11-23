@@ -25,7 +25,7 @@ function LoginPage() {
       const user = { email, type: userDetail.role };
       localStorage.setItem("loggedUser", JSON.stringify(user));
       // login({ email });
-      // navigate("/");
+      navigate("/");
     } catch (error) {
       setError("Invalid email or password. Please try again.");
     }
