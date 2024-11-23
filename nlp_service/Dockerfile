@@ -12,4 +12,5 @@ RUN chmod +x /opt/app/*.sh
 
 EXPOSE 8000
 
-CMD ["/opt/app/run_nlp_service.sh"]
+# CMD ["/opt/app/run_nlp_service.sh"]
+CMD gunicorn -w  4 -b ${NLP_SERVICE_HOST}:8000 /opt/app/nlp_service/nlp_service:wsgi
