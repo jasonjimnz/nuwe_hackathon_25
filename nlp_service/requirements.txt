@@ -1,0 +1,7 @@
+django
+psycopg2-binary
+gunicorn
+spacy
+neo4j-driver
+requests
+attrs

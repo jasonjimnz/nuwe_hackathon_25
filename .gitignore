@@ -1,0 +1,17 @@
+# Python Ignore
+.venv
+venv
+dist
+build
+*.pyc
+__pycache__
+
+# Jetbrains IDE
+.idea
+
+# Local databases
+*.db
+*.sqlite3
+
+# Environmental Values
+.env
