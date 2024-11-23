@@ -1,4 +1,3 @@
-//Admin
 CREATE (admin:Admin {
   id: 1001,
   name: 'Administrador General',
