@@ -64,3 +64,23 @@ class UserToken(BaseModel):
     class Meta:
         verbose_name = 'User token'
         verbose_name_plural = 'User tokens'
+
+
+class Pathology(BaseModel):
+    name = models.CharField(max_length=512)
+    description = models.TextField(null=True, blank=True)
+    score = models.IntegerField(
+        default=0
+    )
+    def get_json(self) -> Dict[str, Any]:
+        return {
+            **super().get_json(),
+            'name': self.name,
+            'description': self.description,
+            'score': self.score
+        }
+
+
+    class Meta:
+        verbose_name = 'Pathology'
+        verbose_name_plural = 'Pathologies'

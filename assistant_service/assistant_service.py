@@ -58,10 +58,12 @@ def chat():
     data = request.json
     question = data.get('question')
     max_tokens = int(data.get('max_tokens', 1024))
-
+    headers = request.headers
     if not question:
         return jsonify({'error': 'Question param is required'}), 400
     # TODO: Before adding a question, check NLP service for retrieving context
+    if headers.get('Authorization'):
+        token = headers.get('Authorization').replace('Bearer ', '')
     resp = query_llm(
         llm=llm,
         question=question,
