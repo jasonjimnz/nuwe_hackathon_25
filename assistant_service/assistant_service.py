@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, stream_with_context, jsonify
+from flask import Flask, request, stream_with_context, jsonify, render_template
 from flask_cors import CORS
 from llama_cpp import Llama
 
@@ -44,6 +44,11 @@ def home():
     })
 
 
+@app.route("/front")
+def front():
+    return render_template('debug_assistant.html')
+
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
@@ -70,6 +75,6 @@ def chat():
 if __name__ == '__main__':
     app.run(
         host=os.getenv('ASSISTANT_SERVICE_HOST', 'localhost'),
-        port=os.getenv('ASSISTANT_SERVICE_PORT', 5001),
+        port=int(os.getenv('ASSISTANT_SERVICE_PORT', 5001)),
         debug=os.getenv('ASSISTANT_SERVICE_DEBUG', 'False') == 'True'
     )

@@ -15,3 +15,6 @@ __pycache__
 
 # Environmental Values
 .env
+
+# Huggingface models
+*.gguf

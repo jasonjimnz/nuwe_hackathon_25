@@ -1,0 +1,40 @@
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:${DB_PORT}"
+  neo4j:
+    image: neo4j:latest
+    volumes:
+      - ./neo4j/logs:/logs
+      - ./neo4j/config:/config
+      - ./neo4j/data:/data
+      - ./neo4j/plugins:/plugins
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD}
+    ports:
+      - "7474:${NEO4J_FRONT}"
+      - "7687:${NEO4J_PORT}"
+    restart: always
+  nlp:
+    build:
+      dockerfile: nlp_service/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nlp_service:/opt/app
+  assistant_service:
+    build:
+      dockerfile: assistant_service/Dockerfile
+    ports:
+      - "5001:${ASSISTANT_SERVICE_PORT}"
+    environment:
+      ASSISTANT_SERVICE_HOST: ${ASSISTANT_SERVICE_HOST}
+      ASSISTANT_SERVICE_PORT: ${ASSISTANT_SERVICE_PORT}
+      LLM_MODEL_PATH: ${LLM_MODEL_PATH}
+      LLM_MODEL_FILE: ${LLM_MODEL_FILE}

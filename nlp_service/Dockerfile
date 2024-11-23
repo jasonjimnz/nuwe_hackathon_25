@@ -8,6 +8,7 @@ COPY nlp_service/ .
 RUN sudo apt update && sudo apt upgrade
 RUN pip install -r requirements.txt
 RUN python -m spacy download es_core_news_sm
+RUN chmod +x /opt/app/*.sh
 
 EXPOSE 8000
 
