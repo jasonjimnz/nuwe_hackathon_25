@@ -1,39 +1,24 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { login } from '../../services/auth_service';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Usuarios predefinidos para testear
-  const predefinedUsers = {
-    specialist: { username: 'especialista', password: 'especialista123' },
-    patient: { username: 'paciente', password: 'paciente123' },
-  };
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (!username || !password) {
+    if (!email || !password) {
       setError('Both fields are required.');
     } else {
       setError('');
-      // Credenciales predefinidas para testear - borrar luego
-      if (
-        (username === predefinedUsers.specialist.username &&
-          password === predefinedUsers.specialist.password) ||
-        (username === predefinedUsers.patient.username &&
-          password === predefinedUsers.patient.password)
-      ) {
-        const userType = username.includes('especialista')
-          ? 'specialist'
-          : 'patient';
-        const user = { username, type: userType };
-        localStorage.setItem('loggedUser', JSON.stringify(user));
-        window.location.reload();
-      } else {
-        setError('Invalid credentials.');
-      }
+      const response = await login(email, password);
+      // const userType = response.role;
+      // const user = { email, type: userType };
+
+      localStorage.setItem('accessToken', response.access_token);
+      window.location.reload();
     }
   };
 
@@ -44,14 +29,14 @@ const Login = () => {
         <form onSubmit={handleLogin} className="login-form">
           {error && <div className="login-error">{error}</div>}
           <div className="login-input-group">
-            <label htmlFor="username" className="login-label">
+            <label htmlFor="email" className="login-label">
               Nombre de usuario
             </label>
             <input
               type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="login-input"
               placeholder="Introduce tu nombre de usuario"
             />
