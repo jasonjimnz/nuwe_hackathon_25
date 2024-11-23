@@ -1,18 +1,18 @@
 const API_URL = 'http://164.132.56.231:3000/api/auth';
 
-export const login = async (username, password) => {
+export const login = async (email, password) => {
   try {
     const response = await fetch(API_URL + '/sign-in', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ Email: email, Password: password }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message, 'Invalid credentials');
+      throw new Error(errorData.message || 'Invalid credentials');
     }
 
     const data = await response.json();

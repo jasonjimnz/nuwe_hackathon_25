@@ -19,17 +19,13 @@ function App() {
       return <Login />;
     }
 
-    if (user.type === 'patient') {
+    if (user.type === 'Paciente') {
       return <HomePagePatient />;
     }
 
-    if (user.type === 'specialist') {
+    if (user.type === 'Medico') {
       return <HomePageSpecialist />;
     }
-
-    // return <Login />;
-    // return <HomePagePatient />;
-    // return <HomePageSpecialist />;
   };
 
   return <div className="App">{renderPage()}</div>;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import { login } from '../../services/auth_service';
+import { getUserDetail } from '../../services/user_service';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,11 +14,13 @@ const Login = () => {
       setError('Both fields are required.');
     } else {
       setError('');
-      const response = await login(email, password);
-      // const userType = response.role;
-      // const user = { email, type: userType };
 
+      const response = await login(email, password);
       localStorage.setItem('accessToken', response.access_token);
+
+      const userDetail = await getUserDetail();
+      const user = { email, type: userDetail.role };
+      localStorage.setItem('loggedUser', JSON.stringify(user));
       window.location.reload();
     }
   };
@@ -30,7 +33,7 @@ const Login = () => {
           {error && <div className="login-error">{error}</div>}
           <div className="login-input-group">
             <label htmlFor="email" className="login-label">
-              Nombre de usuario
+              Email
             </label>
             <input
               type="text"
@@ -38,7 +41,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="login-input"
-              placeholder="Introduce tu nombre de usuario"
+              placeholder="Introduce tu email"
             />
           </div>
           <div className="login-input-group">
