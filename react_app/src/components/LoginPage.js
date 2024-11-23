@@ -24,7 +24,6 @@ function LoginPage() {
       const userDetail = await getUserDetail();
       const user = { email, type: userDetail.role };
       localStorage.setItem("loggedUser", JSON.stringify(user));
-      // login({ email });
       navigate("/");
     } catch (error) {
       setError("Invalid email or password. Please try again.");
@@ -87,14 +86,14 @@ function LoginPage() {
         >
           Register
         </Button>
-        <Button
+        {/* <Button
           variant="outlined"
           color="primary"
           onClick={() => navigate("/forgot-password")}
           sx={{ ml: 2 }}
         >
           Forgot Password?
-        </Button>
+        </Button> */}
       </Box>
     </Box>
   );
