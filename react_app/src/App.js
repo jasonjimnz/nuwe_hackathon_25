@@ -1,34 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import Login from './components/login/Login';
-import HomePagePatient from './components/home_page_patient/HomePagePatient';
-import HomePageSpecialist from './components/home_page_specialist/HomePageSpecialist';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider, CssBaseline, Box, Container } from "@mui/material";
+import { lightTheme, darkTheme } from "./theme";
+// import Navbar from './components/Navbar';
+// import Dashboard from './components/Dashboard';
+// import Footer from './components/Footer';
+import Login from "./components/login/Login";
+import RegisterPage from "./components/RegisterPage";
+import HomePagePatient from "./components/home_page_patient/HomePagePatient";
+import HomePageSpecialist from "./components/home_page_specialist/HomePageSpecialist";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LoginPage from "./components/LoginPage";
+import ForgotPasswordPage from "./components/ForgotPasswordPage";
 
 function App() {
-  const [user, setUser] = useState(null);
+  // State to track dark mode
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
 
+  const toggleTheme = () => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+    localStorage.setItem("theme", newTheme ? "dark" : "light");
+  };
+
+  // Use effect to apply theme on load
   useEffect(() => {
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      setUser(JSON.parse(loggedUser));
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "dark") {
+      setIsDarkMode(true);
     }
   }, []);
 
-  const renderPage = () => {
-    if (!user) {
-      return <Login />;
-    }
+  const auth = Boolean(localStorage.getItem("accessToken") != "");
 
-    if (user.type === 'Paciente') {
-      return <HomePagePatient />;
-    }
+  return (
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <CssBaseline />
+      <Router>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh",
+          }}
+        >
+          {/* <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} /> */}
+          <Container sx={{ flex: 1, mt: 4 }}>
+            <Routes>
+              {/* Rutas protegidas */}
+              <Route element={<ProtectedRoute isAuthenticated={auth} />}>
+                {/* <Route path="/" element={<Dashboard />} /> */}
+                <Route path="/patient" element={<HomePagePatient />} />
+                <Route path="/specialist" element={<HomePageSpecialist />} />
+              </Route>
 
-    if (user.type === 'Medico') {
-      return <HomePageSpecialist />;
-    }
-  };
+              {/* Rutas públicas */}
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-  return <div className="App">{renderPage()}</div>;
+              <Route path="*" element={<LoginPage />} />
+            </Routes>
+          </Container>
+          {/* <Footer isDarkMode={isDarkMode} /> */}
+        </Box>
+      </Router>
+    </ThemeProvider>
+  );
 }
 
 export default App;
