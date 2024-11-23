@@ -130,12 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Spacy Settings
 SUPPORTED_LANGUAGES = ['es']
 
-LANGUAGE_MODELS = {}
-
-for language in SUPPORTED_LANGUAGES:
-    try:
-        LANGUAGE_MODELS[language] = spacy.load(language)
-    except OSError:
-        print('Error: Spacy model {} not found.'.format(language,language))
-
-LANGUAGE_MODELS['es'] = spacy.load('es_core_news_sm')
+# TODO: consider English for future versions
+LANGUAGE_MODELS = {
+    'es': spacy.load('es_core_news_sm')
+}
