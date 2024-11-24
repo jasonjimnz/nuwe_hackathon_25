@@ -21,5 +21,9 @@ from core import views as core_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('parse', core_views.ParseView.as_view(), name='parse'),
-    path('api_parse', core_views.BotParseView.as_view(), name='bot_parse')
+    path('api_parse', core_views.BotParseView.as_view(), name='bot_parse'),
+    path('api/login', core_views.BackendLogin.as_view(), name='api_login'),
+    path('api/check_token', core_views.CheckToken.as_view(), name='api_check_token'),
+    path('api/messages/received', core_views.GetMyMessagesView.as_view(), name='api_received_messages'),
+    path('api/messages/send', core_views.SendMessageView.as_view(), name='api_send_message')
 ]
