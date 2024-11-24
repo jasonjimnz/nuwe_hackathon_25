@@ -2,9 +2,9 @@ from neo4j import GraphDatabase
 import pandas as pd
 
 # Conexión a Neo4j
-uri = "bolt://164.132.56.231:7687"
-username = "neo4j"
-password = "p3o7oSMXmJNJLt9XqCurAviX"
+uri = "
+username = 
+password = 
 driver = GraphDatabase.driver(uri, auth=(username, password))
 def fetch_patients():
     query = """
