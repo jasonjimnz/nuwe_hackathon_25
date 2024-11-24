@@ -1,38 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ThemeProvider, CssBaseline, Box, Container } from "@mui/material";
-import { lightTheme, darkTheme } from "./theme";
-import { authStore } from "./store/authStore";
-import { useStore } from "@nanostores/react";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, CssBaseline, Box, Container } from '@mui/material';
+import { lightTheme, darkTheme } from './theme';
+import { authStore } from './store/authStore';
+import { useStore } from '@nanostores/react';
 
-import Navbar from "./components/Navbar";
-import Dashboard from "./components/Dashboard";
+import Navbar from './components/Navbar';
+import Dashboard from './components/Dashboard';
 // import Footer from './components/Footer';
-import RegisterPage from "./components/RegisterPage";
-import HomePagePatient from "./components/home_page_patient/HomePagePatient";
-import HomePageSpecialist from "./components/home_page_specialist/HomePageSpecialist";
-import ProtectedRoute from "./components/ProtectedRoute";
-import LoginPage from "./components/LoginPage";
-import ForgotPasswordPage from "./components/ForgotPasswordPage";
-import NotProtectedRoute from "./components/NotProtectedRoute";
-import Consultation from "./components/Consultation";
-import Profile from "./components/Profile";
+import RegisterPage from './components/RegisterPage';
+import HomePagePatient from './components/home_page_patient/HomePagePatient';
+import HomePageSpecialist from './components/home_page_specialist/HomePageSpecialist';
+import ProtectedRoute from './components/ProtectedRoute';
+import LoginPage from './components/LoginPage';
+import ForgotPasswordPage from './components/ForgotPasswordPage';
+import NotProtectedRoute from './components/NotProtectedRoute';
+import Consultation from './components/Consultation';
+import ConsultationDetail from './components/ConsultationDetail';
+import Profile from './components/Profile';
 
 function App() {
   const auth = useStore(authStore);
   const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
+    localStorage.getItem('theme') === 'dark'
   );
 
   const toggleTheme = () => {
     const newTheme = !isDarkMode;
     setIsDarkMode(newTheme);
-    localStorage.setItem("theme", newTheme ? "dark" : "light");
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
   };
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme === "dark") {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'dark') {
       setIsDarkMode(true);
     }
   }, []);
@@ -43,9 +44,9 @@ function App() {
       <Router>
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            minHeight: "100vh",
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
           }}
         >
           <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
@@ -59,6 +60,10 @@ function App() {
               >
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/consultation" element={<Consultation />} />
+                <Route
+                  path="/consultation/:id"
+                  element={<ConsultationDetail />}
+                />
                 <Route path="/patient" element={<HomePagePatient />} />
                 <Route path="/specialist" element={<HomePageSpecialist />} />
                 <Route path="/profile" element={<Profile />} />

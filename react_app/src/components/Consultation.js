@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -18,10 +18,11 @@ import {
   InputLabel,
   Snackbar,
   Alert,
-} from "@mui/material";
-import { ConsultationService } from "../services/consultation_service";
-import { authStore } from "../store/authStore";
-import { useStore } from "@nanostores/react";
+} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { ConsultationService } from '../services/consultation_service';
+import { authStore } from '../store/authStore';
+import { useStore } from '@nanostores/react';
 
 function Consultation() {
   const { isAuthenticated, user } = useStore(authStore);
@@ -30,10 +31,11 @@ function Consultation() {
   const [patients, setPatients] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [newConsultation, setNewConsultation] = useState({
-    patientId: "",
-    doctorId: "",
-    date: "",
+    patientId: '',
+    doctorId: '',
+    date: '',
   });
+  const navigate = useNavigate();
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -59,7 +61,7 @@ function Consultation() {
     if (user) {
       setNewConsultation((prevState) => ({
         ...prevState,
-        patientId: user.role === "patient" ? user.id : "",
+        patientId: user.role === 'patient' ? user.id : '',
       }));
     }
   }, [user]);
@@ -68,43 +70,43 @@ function Consultation() {
     if (!user) return;
     try {
       const response =
-        user.role === "patient"
+        user.role === 'patient'
           ? await ConsultationService.getConsultationsByPatient(user.id)
           : await ConsultationService.getConsultationsByDoctor(user.id);
       setConsultations(response);
     } catch (error) {
-      console.error("Error fetching consultations:", error.message);
+      console.error('Error fetching consultations:', error.message);
     }
   };
 
   const fetchDoctorsAndPatients = async () => {
-    try {
-      const doctorsResponse = await fetch(
-        "http://164.132.56.231:3000/api/user/doctors",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
-      const patientsResponse = await fetch(
-        "http://164.132.56.231:3000/api/user/patients",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
+    // try {
+    //   const doctorsResponse = await fetch(
+    //     'http://164.132.56.231:3000/api/user/doctors',
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    //       },
+    //     }
+    //   );
+    //   const patientsResponse = await fetch(
+    //     'http://164.132.56.231:3000/api/user/patients',
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    //       },
+    //     }
+    //   );
 
-      if (doctorsResponse.ok) {
-        setDoctors(await doctorsResponse.json());
-      }
-      if (patientsResponse.ok) {
-        setPatients(await patientsResponse.json());
-      }
-    } catch (error) {
-      console.error("Error fetching doctors or patients:", error.message);
-    }
+    //   if (doctorsResponse.ok) {
+    //     setDoctors(await doctorsResponse.json());
+    //   }
+    //   if (patientsResponse.ok) {
+    //     setPatients(await patientsResponse.json());
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching doctors or patients:', error.message);
+    // }
   };
 
   const handleCreateConsultation = async () => {
@@ -113,7 +115,7 @@ function Consultation() {
       fetchConsultations();
       setOpenDialog(false);
     } catch (error) {
-      console.error("Error creating consultation:", error.message);
+      console.error('Error creating consultation:', error.message);
     }
   };
 
@@ -137,33 +139,44 @@ function Consultation() {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => setOpenDialog(true)}
+        // onClick={() => setOpenDialog(true)}
+        onClick={() => {
+          console.log('- - - - - -Consultation object:', consultations);
+          setOpenDialog(true);
+        }}
         sx={{ mb: 2 }}
       >
-        Create New Consultation
+        Nueva consulta
       </Button>
 
       <List>
-        {consultations.map((consultation) => (
-          <React.Fragment key={consultation.id}>
-            <ListItem>
-              <ListItemText
-                primary={`Consultation with Dr. ${consultation.doctor.name}`}
-                secondary={`Date: ${new Date(
-                  consultation.date
-                ).toLocaleString()}`}
-              />
-            </ListItem>
-            <Divider />
-          </React.Fragment>
-        ))}
+        {consultations.map((consultation) => {
+          return (
+            <React.Fragment key={consultation.id}>
+              <ListItem>
+                <ListItemText
+                  primary={`Conversación con tu paciente: ${consultation.patient.name} ${consultation.patient.lastName}`}
+                  secondary={`Date: ${new Date(
+                    consultation.date
+                  ).toLocaleString()}`}
+                  onClick={() => {
+                    navigate(`/consultations${consultation.id}`);
+                  }}
+                />
+              </ListItem>
+              <Divider />
+            </React.Fragment>
+          );
+        })}
       </List>
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Create New Consultation</DialogTitle>
+        <DialogTitle>Nueva consulta</DialogTitle>
         <DialogContent>
           <FormControl fullWidth margin="dense">
-            <InputLabel id="patient-select-label">Select Patient</InputLabel>
+            <InputLabel id="patient-select-label">
+              Selecciona paciente
+            </InputLabel>
             <Select
               labelId="patient-select-label"
               value={newConsultation.patientId}
@@ -183,7 +196,9 @@ function Consultation() {
           </FormControl>
 
           <FormControl fullWidth margin="dense">
-            <InputLabel id="doctor-select-label">Select Doctor</InputLabel>
+            <InputLabel id="doctor-select-label">
+              Selecciona especialista
+            </InputLabel>
             <Select
               labelId="doctor-select-label"
               value={newConsultation.doctorId}

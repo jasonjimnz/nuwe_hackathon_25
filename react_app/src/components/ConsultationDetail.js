@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -8,21 +8,23 @@ import {
   Divider,
   TextField,
   Button,
-} from "@mui/material";
-import { ConsultationService } from "../services/consultationService";
+} from '@mui/material';
+import { ConsultationService } from '../services/consultation_service';
 
 function ConsultationDetail({ consultationId }) {
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState('');
 
   const fetchMessages = async () => {
     try {
       const consultation = await ConsultationService.getConsultationById(
         consultationId
       );
+      console.log('consultation', consultation);
       setMessages(consultation.data.messages);
+      console.log(' after consultation', messages);
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error('Error fetching messages:', error);
     }
   };
 
@@ -31,10 +33,10 @@ function ConsultationDetail({ consultationId }) {
       await ConsultationService.sendMessage(consultationId, {
         content: newMessage,
       });
-      setNewMessage("");
+      setNewMessage('');
       fetchMessages();
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error('Error sending message:', error);
     }
   };
 
@@ -61,7 +63,7 @@ function ConsultationDetail({ consultationId }) {
         ))}
       </List>
 
-      <Box sx={{ mt: 2, display: "flex", alignItems: "center" }}>
+      <Box sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
         <TextField
           label="New Message"
           fullWidth
