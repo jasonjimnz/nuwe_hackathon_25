@@ -76,6 +76,7 @@
             </div>
             <div class="sendbutton">
                 <button type="submit">Ask the bot</button>
+                <button type="button" id="caller">Talk</button>
             </div>
         </form>
     </div>
@@ -117,5 +118,24 @@
         }
 
     }
+    
+    function voiceCall(event){
+        event.preventDefault();
+        let SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+        let r = new SpeechRecognition();
+        r.lang ='es-ES';
+
+        r.start()
+        r.onresult = (event) => {
+            let word = event.results[0][0].transcript;
+            document.querySelector('#question').value = word
+        }
+        r.onspeechend = (event) => {
+            r.stop()
+            callEvent(event)
+        }
+    }
+
+    document.querySelector('#caller').addEventListener('click', voiceCall)
 </script>
 </html>

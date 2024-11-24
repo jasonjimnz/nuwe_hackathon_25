@@ -25,5 +25,8 @@ urlpatterns = [
     path('api/login', core_views.BackendLogin.as_view(), name='api_login'),
     path('api/check_token', core_views.CheckToken.as_view(), name='api_check_token'),
     path('api/messages/received', core_views.GetMyMessagesView.as_view(), name='api_received_messages'),
-    path('api/messages/send', core_views.SendMessageView.as_view(), name='api_send_message')
+    path('api/messages/send', core_views.SendMessageView.as_view(), name='api_send_message'),
+    path('front/chat/<int:user_id>', core_views.ChatView.as_view(), name='chat'),
+    path('front/login', core_views.LoginView.as_view(), name='front_login'),
+    path('front/users', core_views.ListUsersViews.as_view(), name='front_users')
 ]
