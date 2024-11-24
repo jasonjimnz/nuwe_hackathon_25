@@ -6,6 +6,7 @@ import { User } from 'src/user/entities/user.entity';
 import { CreateUserDto } from 'src/user/dto/create_user.dto';
 import { UpdateUserDto } from 'src/user/dto/update_user.dto';
 import { Auth } from 'src/constants/constants';
+import { Role } from 'src/enums/role';
 
 @Injectable()
 export class UserService {
@@ -41,7 +42,7 @@ export class UserService {
     async getListAdmin(): Promise<User[]> {
         return this.repository.find({ where: { role: Role.Admin } });
     }
-    
+
     async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
         const user = await this.findById(id);
         user.lastName = updateUserDto.LastName || user.lastName;

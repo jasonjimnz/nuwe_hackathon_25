@@ -109,7 +109,7 @@ export class ConsultationService {
   }
 
   async findOne(id: number): Promise<Consultation> {
-    const consultation = await this.consultationRepository.findOne({ where: { id } }, relations: ['doctor', 'patient', 'messages']);
+    const consultation = await this.consultationRepository.findOne({ where: { id }, relations: ['doctor', 'patient'] });
     if (!consultation) {
       throw new NotFoundException('Consultation not found');
     }
