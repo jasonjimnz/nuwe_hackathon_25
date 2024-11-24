@@ -1,5 +1,6 @@
 import json
 
+import requests
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
@@ -74,3 +75,132 @@ class BotParseView(ParseView):
                 "text": data['text']
             }
         )
+
+
+
+class BackendLogin(View):
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(self.request.body.decode('utf-8'))
+        call = requests.post(
+            f"{settings.BACKEND_SERVICE_URL}/api/auth/sign-in",
+            data={
+                'Email': data['email'],
+                'Password': data['password']
+            }
+        )
+        access_token = call.json()["access_token"]
+        user_data = requests.get(
+            f"{settings.BACKEND_SERVICE_URL}/api/user/getUserDetail",
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {access_token}'
+            }
+        )
+
+        return JsonResponse(
+            {
+                "token": access_token,
+                "user_data": user_data.json()
+            }
+        )
+
+
+class BaseApiView(View):
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def check_token(self):
+        access_token = self.request.headers.get('Authorization')
+        user_data = requests.get(
+            f"{settings.BACKEND_SERVICE_URL}/api/user/getUserDetail",
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'{access_token}'
+            }
+        )
+        return user_data
+
+
+class CheckToken(BaseApiView):
+
+    def get(self, request, *args, **kwargs):
+        user_data = self.check_token()
+        if user_data.status_code == 401:
+            return JsonResponse(
+                user_data.json,
+                status=401
+            )
+        return JsonResponse(
+            user_data.json()
+        )
+
+
+# TODO: Listado mensajes
+class MessagesList(View):
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+# TODO: Listado pacientes por médico
+class PatientList(View):
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+class GetMyMessagesView(BaseApiView):
+    def get(self, request, *args, **kwargs):
+        user_data = self.check_token()
+        if user_data.status_code == 401:
+            return JsonResponse(
+                user_data.json,
+                status=401
+            )
+        user = user_data.json()
+        sent_messages = requests.get(
+            f'{settings.BACKEND_SERVICE_URL}/api/messages/sent/{user["id"]}',
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': self.request.headers.get('Authorization')
+            }
+        )
+
+        # received_messages = requests.get(f'{settings.BACKEND_SERVICE_URL}/api/messages/received/{user["id"]}')
+        # consultation_messages = requests.get(f'{settings.BACKEND_SERVICE_URL}/api/messages/consultation/{user["id"]}')
+        messages= sent_messages.json()
+        return JsonResponse(messages, safe=False)
+
+
+class SendMessageView(BaseApiView):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(self.request.body.decode('utf-8'))
+        user_data = self.check_token()
+        if user_data.status_code == 401:
+            return JsonResponse(
+                user_data.json,
+                status=401
+            )
+        user = user_data.json()
+
+        send_message = requests.post(
+            f'{settings.BACKEND_SERVICE_URL}/api/messages',
+            json={
+                "content": str(data['content']),
+                "senderId": int(user['id']),
+                "receiverId": int(data['receiverId']),
+                "consultationId": int(data.get('consultationId', '1'))
+            },
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': self.request.headers.get('Authorization')
+            }
+        )
+
+        return JsonResponse(send_message.json(), safe=False)
