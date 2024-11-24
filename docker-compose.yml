@@ -40,7 +40,7 @@ services:
     build:
       dockerfile: assistant_service/Dockerfile
     ports:
-      - "5001:${ASSISTANT_SERVICE_PORT}"
+      - "5001:5001"
     environment:
       ASSISTANT_SERVICE_HOST: ${ASSISTANT_SERVICE_HOST}
       ASSISTANT_SERVICE_PORT: ${ASSISTANT_SERVICE_PORT}
