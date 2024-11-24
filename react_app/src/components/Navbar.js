@@ -77,17 +77,17 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {/* //TODO */}
-            {/* {isAuthenticated && loggedUser && (
+          <Box sx={{ display: 'flex' }}>
+            {isAuthenticated && user && (
               <>
-                <Tooltip title={loggedUser.email}>
-                  <Avatar sx={{ ml: 2 }}>
-                    {loggedUser.email.charAt(0).toUpperCase()}
+                <Tooltip title={user.email}>
+                  {/* TODO Molaría coger la inicial-iniciales del nombre en lugar de la primera letra del email */}
+                  <Avatar sx={{ ml: 2 }} onClick={() => navigate('/profile')}>
+                    {user.email.charAt(0).toUpperCase()}
                   </Avatar>
                 </Tooltip>
               </>
-            )} */}
+            )}
           </Box>
         </Toolbar>
       </AppBar>
