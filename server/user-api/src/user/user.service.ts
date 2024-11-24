@@ -30,6 +30,18 @@ export class UserService {
         return user;
     }
 
+    async getListPatient(): Promise<User[]> {
+        return this.repository.find({ where: { role: Role.Patient } });
+    }
+
+    async getListDoctor(): Promise<User[]> {
+        return this.repository.find({ where: { role: Role.Doctor } });
+    }
+
+    async getListAdmin(): Promise<User[]> {
+        return this.repository.find({ where: { role: Role.Admin } });
+    }
+    
     async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
         const user = await this.findById(id);
         user.lastName = updateUserDto.LastName || user.lastName;

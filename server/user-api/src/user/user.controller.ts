@@ -118,4 +118,25 @@ export class UserController {
     await this.userService.delete(id);
     return { message: 'Usuario eliminado correctamente.' };
   }
+  
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener lista de pacientes' })
+  @Get('patients')
+  async getPatients() {
+    return this.userService.getListPatient();
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener lista de doctores' })
+  @Get('doctors')
+  async getDoctors() {
+    return this.userService.getListDoctor();
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener lista de administradores' })
+  @Get('admins')
+  async getAdmins() {
+    return this.userService.getListAdmin();
+  }
 }
