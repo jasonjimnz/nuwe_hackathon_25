@@ -32,6 +32,8 @@ services:
       NEO4J_USER: ${NEO4J_USER}
       NEO4J_PASSWORD: ${NEO4J_PASSWORD}
       ASSISTANT_API_TOKEN: ${ASSISTANT_API_TOKEN}
+      ASSISTANT_SERVICE_URL: ${ASSISTANT_SERVICE_URL}
+      BACKEND_SERVICE_URL: ${BACKEND_SERVICE_URL}
     volumes:
       - ./nlp_service:/opt/app
   assistant_service:
