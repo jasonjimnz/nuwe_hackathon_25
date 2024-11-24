@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block body %}
+    Chat
+
+    <div>{{ access_token  }}</div>
+    <div>{{ user_data }}</div>
+    <div>Chatting to: {{ chat_to }}</div>
+    <div>
+        <h2>messages</h2>
+        <div>
+            {% for message in messages %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div>
+        <h2>Send message</h2>
+        <form action="{% url 'chat' user_id=chat_to %}" method="POST">
+            {% csrf_token %}
+            <div>
+                <label for="text"></label>
+                <input type="text" name="text" id="text">
+            </div>
+            <div>
+                <button type="submit">Enviar mensaje</button>
+            </div>
+        </form>
+    
+    </div>
+{% endblock %}

@@ -1,11 +1,14 @@
 import json
+from typing import Any, Dict
 
 import requests
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 
 from .graph import add_user_word_token
 from .models import WordToken
@@ -100,6 +103,8 @@ class BackendLogin(View):
                 'Authorization': f'Bearer {access_token}'
             }
         )
+
+        self.request.session.__setitem__('access_token', access_token)
 
         return JsonResponse(
             {
@@ -204,3 +209,112 @@ class SendMessageView(BaseApiView):
         )
 
         return JsonResponse(send_message.json(), safe=False)
+
+
+class LoginView(TemplateView):
+    template_name = 'login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        data = self.request.POST
+        call = requests.post(
+            f"{settings.BACKEND_SERVICE_URL}/api/auth/sign-in",
+            data={
+                'Email': data['email'],
+                'Password': data['password']
+            }
+        )
+        access_token = call.json()["access_token"]
+        user_data = requests.get(
+            f"{settings.BACKEND_SERVICE_URL}/api/user/getUserDetail",
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {access_token}'
+            }
+        )
+
+        self.request.session.__setitem__('access_token', access_token)
+        self.request.session.__setitem__('user_data', user_data.json())
+
+        return redirect(reverse('chat'))
+
+
+class ChatView(TemplateView):
+    template_name = 'chat.html'
+
+
+    def get_messages(self, access_token: str, user_data: Dict[str, Any]):
+        messages = []
+        r = requests.get(
+            f"{settings.BACKEND_SERVICE_URL}/api/messages/received/{user_data['id']}",
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {access_token}'
+            }
+        )
+
+        r2 = requests.get(
+            f"{settings.BACKEND_SERVICE_URL}/api/messages/sent/{user_data['id']}",
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {access_token}'
+            }
+        )
+        messages.extend(r.json())
+        messages.extend(r2.json())
+        return messages
+
+    def post(self, request, *args, **kwargs):
+        data = self.request.POST
+        r = requests.post(
+            f"{settings.BACKEND_SERVICE_URL}/api/messages",
+            json={
+                "content": data['text'],
+                "senderId": int(self.request.session.get('user_data')['id']),
+                "receiverId": int(self.kwargs.get('user_id')),
+                "consultationId": int('1')
+            },
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {self.request.session.get("access_token")}'
+            }
+        )
+
+        return redirect(reverse('chat', kwargs={'user_id': self.kwargs.get('user_id')}))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['access_token'] = self.request.session.get('access_token')
+        context['user_data'] = self.request.session.get('user_data')
+        context['messages'] = self.get_messages(context['access_token'], context['user_data'])
+        context['chat_to'] = self.kwargs.get('user_id')
+        return context
+
+
+class ListUsersViews(TemplateView):
+    template_name = 'users.html'
+
+    def get_users(self):
+        user_data = []
+        valid_user_ids = [1,2,3]
+        for v in valid_user_ids:
+            if v != self.request.session.get('user_data')['id']:
+                r = requests.get(
+                    f'{settings.BACKEND_SERVICE_URL}/api/user/id/{v}',
+                    headers={
+                        'Content-Type': 'application/json',
+                        'Authorization': f'Bearer {self.request.session.get("access_token")}'
+                    }
+                )
+                if r.status_code == 200:
+                    user_data.append(r.json())
+        return user_data
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = self.get_users()
+        return context
