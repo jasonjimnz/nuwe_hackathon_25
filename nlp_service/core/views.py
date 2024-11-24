@@ -17,7 +17,7 @@ class ParseView(View):
 
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
-        super().dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         headers = self.request.headers.get('Authorization')
@@ -62,8 +62,11 @@ class BotParseView(ParseView):
                     text=data['text'],
                     lemma=token.lemma_
                 )
-                word = WordToken(lemma=token.lemma_, word=token.text)
-                word.save()
+                try:
+                    word = WordToken.objects.get(lemma=token.lemma_, word=token.text)
+                except WordToken.DoesNotExist:
+                    word = WordToken(lemma=token.lemma_, word=token.text)
+                    word.save()
                 words.append(word.get_json())
         return JsonResponse(
             {
