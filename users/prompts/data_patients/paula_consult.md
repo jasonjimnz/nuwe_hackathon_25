@@ -5,7 +5,7 @@ Sintomatología:
 Sentimiento constante de vacío tras terminar una relación importante hace unos meses.
 Siente como si algo dentro de ella estuviera roto, pero no sabe cómo arreglarlo.
 Intentos por distraerse con trabajo y actividades, pero nada parece llenarla.
-Falta de energía e interés en salir o conocer gente nueva, a pesar de las recomendaciones de sus amigos.
+Falta de energía e interaés en salir o conocer gente nueva, a pesar de las recomendaciones de sus amigos.
 Sentimientos de inseguridad, preguntándose si hay algo malo en ella que le impide avanzar.
 Deseo de ser feliz nuevamente, pero sin saber cómo.
 A pesar de estar rodeada de personas, se siente sola y desconectada.
