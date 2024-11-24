@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { ConsultationService } from '../services/consultation_service';
 import { authStore } from '../store/authStore';
 import { useStore } from '@nanostores/react';
+import ConsultationDetail from './ConsultationDetail';
 
 function Consultation() {
   const { isAuthenticated, user } = useStore(authStore);
@@ -97,7 +98,6 @@ function Consultation() {
     //       },
     //     }
     //   );
-
     //   if (doctorsResponse.ok) {
     //     setDoctors(await doctorsResponse.json());
     //   }
@@ -160,7 +160,8 @@ function Consultation() {
                     consultation.date
                   ).toLocaleString()}`}
                   onClick={() => {
-                    navigate(`/consultations${consultation.id}`);
+                    navigate(`/consultations/${consultation.id}`);
+                    // <ConsultationDetail consultationId={consultation.id} />;
                   }}
                 />
               </ListItem>
@@ -217,7 +218,7 @@ function Consultation() {
             </Select>
           </FormControl>
           <TextField
-            label="Date"
+            // label="Date"
             fullWidth
             type="datetime-local"
             value={newConsultation.date}
