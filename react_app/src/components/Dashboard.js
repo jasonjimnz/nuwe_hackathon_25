@@ -7,8 +7,12 @@ import {
   ListItemText,
   Divider,
 } from "@mui/material";
+import { authStore } from "../store/authStore";
+import { useStore } from "@nanostores/react";
 
-function Dashboard({ userDetail }) {
+function Dashboard() {
+  const { isAuthenticated, user } = useStore(authStore);
+
   const openConsultations = [];
   const closedConsultations = [];
 

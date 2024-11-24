@@ -1,8 +1,8 @@
 import { atom } from "nanostores";
 
 export const authStore = atom({
-  isAuthenticated: localStorage.getItem("accessToken") === "true",
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  isAuthenticated: localStorage.getItem("accessToken") != null,
+  user: JSON.parse(localStorage.getItem("userData")) || null,
 });
 
 export const loginStore = (access_token, userData) => {

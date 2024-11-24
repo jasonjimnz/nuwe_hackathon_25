@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./components/LoginPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage";
 import NotProtectedRoute from "./components/NotProtectedRoute";
+import Consultation from "./components/Consultation";
 
 function App() {
   const auth = useStore(authStore);
@@ -56,6 +57,7 @@ function App() {
                 }
               >
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/consultation" element={<Consultation />} />
                 <Route path="/patient" element={<HomePagePatient />} />
                 <Route path="/specialist" element={<HomePageSpecialist />} />
               </Route>
