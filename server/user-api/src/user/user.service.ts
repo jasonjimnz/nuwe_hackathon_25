@@ -13,23 +13,15 @@ export class UserService {
 
     async create(createUserDto: CreateUserDto): Promise<User> {
         const hashedPassword = await bcrypt.hash(createUserDto.Password, Auth.PASSWORD_SALT);
-        const newUser = this.repository.create({
-            userName: createUserDto.UserName,
-            lastName: createUserDto.LastName,
-            name: createUserDto.Name,
-            email: createUserDto.Email,
-            password: hashedPassword,
-        });
+        const newUser: User = new User();
+        newUser.email = createUserDto.Email;
+        newUser.password = hashedPassword;
+
         return this.repository.save(newUser);
     }
 
     async findById(id: number): Promise<User> {
         const user = await this.repository.findOne({ where: { id } });
-        return user;
-    }
-
-    async findByUserName(userName: string): Promise<User> {
-        const user = await this.repository.findOne({ where: { userName } });
         return user;
     }
 
@@ -40,10 +32,12 @@ export class UserService {
 
     async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
         const user = await this.findById(id);
-        user.userName = updateUserDto.UserName || user.userName;
         user.lastName = updateUserDto.LastName || user.lastName;
         user.name = updateUserDto.Name || user.name;
         user.email = updateUserDto.Email || user.email;
+        user.role = updateUserDto.Role || user.role;
+        user.birthDate = updateUserDto.BirthDate || user.birthDate;
+        user.gender = updateUserDto.Gender || user.gender;
 
         if (updateUserDto.Password) {
             user.password = await bcrypt.hash(updateUserDto.Password, Auth.PASSWORD_SALT);
@@ -63,10 +57,10 @@ export class UserService {
         await this.repository.remove(user);
     }
 
-    async selectWithPassword(userName: string): Promise<User> {
+    async selectWithPassword(email: string): Promise<User> {
         return await this.repository.findOne({
-            where: { userName },
-            select: ['id', 'userName', 'password'],
+            where: { email },
+            select: ['id', 'email', 'password'],
         });
     }
 }

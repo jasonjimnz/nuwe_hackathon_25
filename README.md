@@ -15,3 +15,10 @@ Este proyecto fue creado para participar en el hackathon organizado por Nuwe, co
    ```bash
    git clone https://github.com/jasonjimnz/nuwe_hackathon_25
    ```
+
+
+## Endpoints de servicio
+- [https://nuwe.jasonjimenez.app](https://nuwe.jasonjimenez.app) Para el Frontend en React (puerto 3001)
+- [https://assistant_nuwe.jasonjimenez.app](https://assistant_nuwe.jasonjimenez.app) Para el servicio de LLM (puerto 5001)
+- [https://nlp_nuwe.jasonjimenez.app](https://nlp_nuwe.jasonjimenez.app) Para el servicio de NLP y grafos (puerto 8000)
+- [https://backend.jasonjimenez.app](https://backend.jasonjimenez.app) Para el servicio de backend (puerto 3000)

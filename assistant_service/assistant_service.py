@@ -1,5 +1,7 @@
 import os
-from flask import Flask, request, stream_with_context, jsonify
+
+import requests
+from flask import Flask, request, stream_with_context, jsonify, render_template
 from flask_cors import CORS
 from llama_cpp import Llama
 
@@ -32,8 +34,13 @@ def query_llm(
 
 app = Flask(__name__)
 CORS(app)
-model = os.getenv('LLM_MODEL_PATH')
-llm = load_llm(model_path=model)
+model = '/opt/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf'
+NLP_SERVICE_TOKEN = os.getenv('ASSISTANT_API_TOKEN', '')
+try:
+    llm = load_llm(model_path=model)
+except Exception as e:
+    print(f"{model} used for loading model does not provide a model")
+    raise e
 
 
 @app.route("/")
@@ -44,15 +51,31 @@ def home():
     })
 
 
+@app.route("/front")
+def front():
+    return render_template('debug_assistant.html')
+
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
     question = data.get('question')
     max_tokens = int(data.get('max_tokens', 1024))
-
+    headers = request.headers
     if not question:
         return jsonify({'error': 'Question param is required'}), 400
-
+    # TODO: Before adding a question, check NLP service for retrieving context
+    if headers.get('Authorization'):
+        token = headers.get('Authorization').replace('Bearer ', '')
+    if NLP_SERVICE_TOKEN:
+        requests.post(
+            url="{}/api_parse".format(os.getenv('NLP_SERVICE_URL')),
+            data={"question": question},
+            headers={
+                "Authorization": f"Bearer {NLP_SERVICE_TOKEN}",
+                "Content-type": "application/json"
+            }
+        )
     resp = query_llm(
         llm=llm,
         question=question,
@@ -70,6 +93,6 @@ def chat():
 if __name__ == '__main__':
     app.run(
         host=os.getenv('ASSISTANT_SERVICE_HOST', 'localhost'),
-        port=os.getenv('ASSISTANT_SERVICE_PORT', 5001),
+        port=int(os.getenv('ASSISTANT_SERVICE_PORT', 5001)),
         debug=os.getenv('ASSISTANT_SERVICE_DEBUG', 'False') == 'True'
     )

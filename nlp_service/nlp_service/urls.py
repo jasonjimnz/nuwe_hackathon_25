@@ -20,5 +20,6 @@ from core import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('parse', core_views.ParseView.as_view(), name='parse')
+    path('parse', core_views.ParseView.as_view(), name='parse'),
+    path('api_parse', core_views.BotParseView.as_view(), name='bot_parse')
 ]

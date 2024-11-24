@@ -15,3 +15,9 @@ __pycache__
 
 # Environmental Values
 .env
+
+# Huggingface models
+*.gguf
+
+# Neo4J Data folder
+neo4j/
