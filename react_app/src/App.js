@@ -16,6 +16,7 @@ import LoginPage from "./components/LoginPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage";
 import NotProtectedRoute from "./components/NotProtectedRoute";
 import Consultation from "./components/Consultation";
+import Profile from "./components/Profile";
 
 function App() {
   const auth = useStore(authStore);

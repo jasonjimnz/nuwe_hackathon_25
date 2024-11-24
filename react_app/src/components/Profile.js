@@ -111,6 +111,7 @@ function Profile() {
           >
             <MenuItem value="Masculino">Masculino</MenuItem>
             <MenuItem value="Femenino">Femenino</MenuItem>
+            <MenuItem value="Otro">Otro</MenuItem>
           </Select>
         </FormControl>
         {/* No podrán cambiar de role no? */}
