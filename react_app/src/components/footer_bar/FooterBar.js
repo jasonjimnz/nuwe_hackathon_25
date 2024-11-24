@@ -4,6 +4,7 @@ import './FooterBar.css';
 const FooterBar = ({ userType, patientName, onBackClick }) => {
   const handleLogout = () => {
     localStorage.removeItem('loggedUser');
+    localStorage.removeItem('access_token');
     window.location.reload();
   };
 
